@@ -1,0 +1,357 @@
+const readline = require("readline-sync")
+const player = {
+    name : "",
+    life : 100,
+    weapons : [],
+    isAlive : true,
+    attackingMonster : false,
+    isRunning : false,
+    haskey : false,
+    fightingDragon: false
+}
+
+player.name = readline.question('May I have your name? ')
+console.log(`${player.name} welcome, to the Sciptopia! The Royal family is trapped in a tower (cause these villians were like 'why stop at a princess??'). `)
+console.log(`They Need YOUR help ${player.name}. Seriously, It has to be YOU ${player.name}.`) 
+console.log(`But first you'll need the key. And yes, there IS a dragon gaurding the key. But your not ready to face him yet, first you should wander the jungle and fight enemies to collect weapons. `)
+console.log(`Careful, some enemies are stronger than other's and sometimes it's better to live to fight another day if you now what I mean. Once you have a strong enough weapon, ${player.name} you'll be ready for the Dragon. `)
+console.log(`Of course, there's always one stup- erm "brave" player who wants to fight the dragon right away(that usually goes well).  Can you defeat the monsters, collect the weapons and save the princess?`);
+
+
+const hands = {
+    name: "these hands",
+    Definition : "Sorry No weapons yet, FIGHT!",
+    DamageLevel :  1
+}
+const club = {
+    name : "a club",
+    Definition : "A club! Hey batter batter, Heyy batter batter,SWING!",
+    DamageLevel :  2
+}
+const sword =  {
+    name : "a sword",
+    Definition : "A sword! Stick 'em with the pointy end!",
+    DamageLevel :  3
+}
+const laserGun = {
+    name : "a Laser Gun",
+    Definition : "A laser gun! Say hello to my not so little friend!",
+    DamageLevel :  4
+} 
+const magicWand = {
+    name : "a Magic Wand",
+    Definition : "AVADA KEDAVRA!",
+    DamageLevel :  5
+} 
+const key = {
+    name : "a key",
+    defintion : "It's no weapon, but it'll get you the girl!",
+    DamageLevel : null
+}
+
+player.weapons.push(hands)
+
+const firebBreathingDragon = {
+    name : "The Fire Breathing Dragon",
+    life : 100,
+    level : 5,
+    prizeForDefeat: key,
+    
+}
+const bigFoot = {
+    name : "Big Foot",
+    life : 10,
+    level : 1,
+    prizeForDefeat : club,
+
+}
+const cyclops = {
+    name : "Cyclops",
+    life : 20,
+    level : 2,
+    prizeForDefeat : sword,
+}
+const medusa = {
+    name : "Medusa",
+    life : 30,
+    level : 3,
+    prizeForDefeat : laserGun,
+    
+}
+const zeus = {
+    name : "Zeus",
+    life : 40,
+    level : 4,
+    prizeForDefeat : magicWand,
+    
+}
+let enemies = []
+enemies.push(bigFoot, cyclops, medusa, zeus)
+
+console.log()
+
+while(player.isAlive){
+    if(player.life <= 0){
+        console.log("LOSER")
+        player.isAlive = false
+    }else{
+   
+    const walk = readline.keyIn(`To continue forward, press [W]alk or Be Brave and [S]ave the Royal Family or [F]ight the Dragon. (You can also check your [I]nvetory and [L]ife. [Q]uit the game`, {limit: 'wiqlfs'})
+    if(walk.toLowerCase() === "w"){
+
+        walking()
+
+    }else if(walk.toLowerCase() === "i"){
+
+        for(i = 0; i < player.weapons.length; i++){
+        console.log(`Iventory: ${player.weapons[i].name}`)
+        }
+
+    }else if(walk.toLowerCase() === "l"){
+        console.log(`You have ${player.life} life points left`)
+
+    }else if(walk.toLowerCase() === "f"){
+        player.fightingDragon = true
+        fightTheDragon()
+
+    }else if(walk.toLowerCase() === "s"){
+        if(player.weapons.indexOf(key) >= 0){
+            saveTheRoyalFamily()
+        }else if(player.weapons.indexOf(key) < 0){
+            console.log("You don't have a key! Did you fight the Dragon yet???? Then WHY ARE YOU HERE?! BEGONE!")
+        }
+
+    }else{
+        player.isAlive = false
+    }
+ 
+    
+}
+}
+
+function walking (){
+
+        let randomNumber =  Math.floor((Math.random()*10)+1) 
+        if(randomNumber <= 4 ){
+            let randomNumber = Math.floor(Math.random() * enemies.length)
+            let randomEnemy = enemies[randomNumber]
+            console.log(`Oh no, a ${randomEnemy.name} is blocking your way!`)
+            const decision  = readline.keyIn(`Will you : [R]un or [F]ight`, {limit: 'rf'})
+            if (decision === "r"){
+                player.isRunning = true
+                runningAway(randomEnemy)
+             }else{
+                 player.attackingMonster = true
+                attackingEnemy(randomEnemy)
+             }
+        }else{
+            console.log("nothing here, better continue on")
+        
+        }
+    }
+
+
+
+
+function runningAway(randomEnemy){
+    while(player.isRunning === true){
+        if(player.life <= 0){
+            player.isrunnings = false
+        }else{
+    var random = Math.floor((Math.random()*10)+1)
+        if(random >= 5){
+            console.log(`You tripped and fell, ${randomEnemy.name} attacked you and you lost 10 life points`)
+            player.life = (player.life - 10)
+            console.log(player.life)
+            var decisionTwo = readline.keyIn(`Will you : keep [R]unning or stand and [F]ight`, {limit: 'rf'})
+            if(decisionTwo === "r"){
+                player.isRunning = true
+            }else{
+                player.attackingMonster = true
+                attackingEnemy()
+                player.isRunning = false
+            }          
+        }else{
+            console.log("You got away!")
+            player.isRunning = false
+            
+                    
+        }
+}
+    }
+}
+
+
+function attackingEnemy(randomEnemy){
+   
+    while(player.attackingMonster === true){
+        if(player.life <= 0){
+            player.attackingMonster = false
+        }else{
+        let weapon = chooseYourWeapon()
+        let weaponIndex = player.weapons.indexOf(weapon) 
+        if(weaponIndex >= 0){
+            console.log(`You chose ${weapon.name}, ${weapon.Definition}`)
+            if(randomEnemy.level < weapon.DamageLevel ) {
+                battleWithGoodWeapon(randomEnemy, weapon)
+            }else if(randomEnemy.level === weapon.DamageLevel ){
+                battleWithOkWeapon(randomEnemy, weapon)
+            }else if(randomEnemy.level > weapon.DamageLevel ){
+                battleWithCrappyWeapon(randomEnemy, weapon)
+            }
+    
+        }else{
+            console.log("It doesn't look like you have this weapon yet! Keep fighting to earn it!")
+        }
+    }
+    }
+}
+    
+    
+    
+    
+    function battleWithGoodWeapon(randomEnemy, weapon,){
+        
+            let indexNumber = enemies.indexOf(randomEnemy)
+            var newWeapon = enemies[indexNumber].prizeForDefeat
+            player.weapons.push(newWeapon)
+            enemies.splice(indexNumber, 1)
+            console.log(`${randomEnemy.name} is no match for ${weapon.name}, you killed them and won ${newWeapon.name} `)
+            player.attackingMonster = false
+    }
+    
+    function battleWithOkWeapon(randomEnemy, weapon){
+        
+        let indexNumber = enemies.indexOf(randomEnemy)
+        
+        enemies[indexNumber].life = enemies[indexNumber].life - 13
+        console.log(enemies[indexNumber].life)
+        console.log(`You hit ${randomEnemy.name} with ${weapon.name}, you hurt them and now their angry! `)
+        console.log("RAWWWRRRR")
+        player.life = (player.life - 5)
+        console.log(player.life)
+        const nextChoice  = readline.keyIn(` ${randomEnemy.name} hit you and you lost 5 life points. Be careful! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
+       
+    
+        if (nextChoice === "r"){
+            player.isRunning = true
+            runningAway(randomEnemy)
+            player.attackingMonster = false
+        }else{ 
+            
+            if(enemies[indexNumber].life <= 0){
+            battleWithGoodWeapon(randomEnemy, weapon)
+            player.attackingMonster = false
+            }else{
+            player.attackingMonster = true
+            }
+        }
+    
+        
+    
+    }
+    
+    function battleWithCrappyWeapon(randomEnemy, weapon){
+        let indexNumber = enemies.indexOf(randomEnemy)
+        enemies[indexNumber].life = enemies[indexNumber].life - 8
+        console.log(enemies[indexNumber].life)
+        console.log(`You hit ${randomEnemy.name} with ${weapon.name}, you've irritated them and now their angry! `)
+        console.log("RAWWWRRRR")
+        player.life = (player.life - 10)
+        console.log(player.life)
+        const nextChoice  = readline.keyIn(` ${randomEnemy.name} hit you and you lost 10 life points. Be careful! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
+    
+        if (nextChoice === "r"){
+            player.isRunning = true
+            runningAway(randomEnemy)
+            player.attackingMonster = false
+        }else{ 
+            
+            if(enemies[indexNumber].life <= 0){
+            battleWithGoodWeapon(randomEnemy, weapon)
+            player.attackingMonster = false
+            }else{
+            player.attackingMonster = true
+            }
+        }
+    
+    }
+    
+    
+    function chooseYourWeapon(){
+        const chooseWeapon  = readline.keyIn(`Choose your weapon [h]ands, [c]club, [s]word, [l]asr gun, [m]agic wand`, {limit: 'hcslm'}) 
+          
+            if(chooseWeapon === "h"){
+                let weapon = hands
+                return weapon
+            }else if(chooseWeapon === "c"){
+                let weapon = club
+                return weapon
+            }else if(chooseWeapon === "s"){
+                let weapon = sword
+                return weapon
+            }else if(chooseWeapon === "l"){
+                let weapon = laserGun
+                return weapon
+            }else if(chooseWeapon === "m"){
+                let weapon = magicWand
+                return weapon
+            }
+                
+    }
+
+    function fightTheDragon(){
+    while(player.fightingDragon === true){
+        if(player.life > 0){
+        let randomEnemy = firebBreathingDragon
+        let weapon = chooseYourWeapon()
+        if(player.weapons.indexOf(weapon) >= 0){        
+            if(weapon.DamageLevel < randomEnemy.level){
+                console.log(`You chose ${weapon.name}, ${weapon.Definition}`)
+                console.log(`You hit ${randomEnemy.name} with ${weapon.name}, they barely felt it! `)
+                console.log("RAWWWWR *FIREBALL* RAWWWWR *FIREBALL *RAWWWWR *FIREBALL* ")
+                player.life = (player.life - 50)
+                console.log(player.life)
+                const nextChoice  = readline.keyIn(` ${randomEnemy.name} hit you and you lost FIFTY life points. You should definitely RUN NOW! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
+                    if (nextChoice === "r"){
+                    player.isRunning = true
+                    runningAway(randomEnemy, weapon)
+                    player.fightingDragon = false
+                    }else{ 
+                        if(player.life <= 0){
+                            player.isAlive = false
+                        }else{
+                        player.fightingDragon = true
+                        }
+                    }
+    
+            }else if(weapon.DamageLevel >= randomEnemy.level){
+                console.log(`You chose ${weapon.name}, ${weapon.Definition}`)
+                console.log(`You hit ${randomEnemy.name} with ${weapon.name}, they're reeling!!' `)
+                console.log("RAWWWWR *FIREBALL* RAWWWWR *FIREBALL *RAWWWWR *FIREBALL* ")
+                console.log(`This dragon is no one year old wizard cloaked in love so the killng curse did them in!!`)
+                player.weapons.push(randomEnemy.prizeForDefeat)
+                console.log(`Oh Look, A key!`)
+            
+                player.fightingDragon = false
+
+        }
+    }else{
+            console.log("It doesn't look like you have this weapon yet! Keep fighting to earn it!")
+
+        }
+
+
+        
+        }else{
+            player.fightingDragon = false
+        }
+    }
+
+} 
+function saveTheRoyalFamily(){
+    console.log('WOW Your amazing astonishing amazing!!!! You saved the royal family and they want to reward you, with money, a palace, a princess, a prince, whatever your into! You should be poud')
+    console.log(`THE END`)
+    player.isAlive = false
+}
+    
