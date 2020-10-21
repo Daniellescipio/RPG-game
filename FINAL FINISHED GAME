@@ -12,10 +12,10 @@ const player = {
 
 player.name = readline.question('May I have your name? ')
 console.log(`${player.name} welcome, to the Sciptopia! The Royal family is trapped in a tower (cause these villians were like 'why stop at a princess??'). `)
-console.log(`They Need YOUR help ${player.name}. Seriously, It has to be YOU ${player.name}.`) 
-console.log(`But first you'll need the key. And yes, there IS a dragon gaurding the key. But your not ready to face him yet, first you should wander the jungle and fight enemies to collect weapons. `)
-console.log(`Careful, some enemies are stronger than other's and sometimes it's better to live to fight another day if you now what I mean. Once you have a strong enough weapon, ${player.name} you'll be ready for the Dragon. `)
-console.log(`Of course, there's always one stup- erm "brave" player who wants to fight the dragon right away(that usually goes well).  Can you defeat the monsters, collect the weapons and save the princess?`);
+console.log(`They need YOUR help ${player.name}. Seriously, It HAS to be YOU ${player.name}.`) 
+console.log(`But first you'll need the key. And yes, there IS a dragon guarding the key. But you're not ready to face the dragon yet. First, you should wander the jungle and fight enemies to collect weapons. `)
+console.log(`Careful, some enemies are stronger then others, and sometimes it's better to live to fight another day, if you know what I mean. Once you have a strong enough weapon ${player.name}, you'll be ready for the Dragon. `)
+console.log(`Of course, there's always one stup- I mean, "brave" player who wants to fight the dragon right away(that usually goes well).  Can you defeat the monsters, collect the weapons, and save the princess?`);
 
 
 const hands = {
@@ -96,10 +96,15 @@ while(player.isAlive){
         player.isAlive = false
     }else{
    
-    const walk = readline.keyIn(`To continue forward, press [W]alk or Be Brave and [S]ave the Royal Family or [F]ight the Dragon. (You can also check your [I]nvetory and [L]ife. [Q]uit the game`, {limit: 'wiqlfs'})
+    const walk = readline.keyIn(`To continue forward, press [W]alk or Be Brave and [R]escue the Royal Family or [F]ight the Dragon. (You can also check your [I]nvetory and [L]ife. [Q]uit the game`, {limit: 'wiqlfr'})
     if(walk.toLowerCase() === "w"){
-
-        walking()
+            if(enemies.length > 0){
+                walking()
+            }else{
+                console.log(`It looks like you beat all the monsters in the jungle, time to face the Dragon. READY OR NOT!`)
+                fightTheDragon()
+            }
+        
 
     }else if(walk.toLowerCase() === "i"){
 
@@ -114,7 +119,7 @@ while(player.isAlive){
         player.fightingDragon = true
         fightTheDragon()
 
-    }else if(walk.toLowerCase() === "s"){
+    }else if(walk.toLowerCase() === "r"){
         if(player.weapons.indexOf(key) >= 0){
             saveTheRoyalFamily()
         }else if(player.weapons.indexOf(key) < 0){
@@ -135,7 +140,7 @@ function walking (){
         if(randomNumber <= 4 ){
             let randomNumber = Math.floor(Math.random() * enemies.length)
             let randomEnemy = enemies[randomNumber]
-            console.log(`Oh no, a ${randomEnemy.name} is blocking your way!`)
+            console.log(`Oh no, a ${randomEnemy.name} is blocking your way! ${randomEnemy.name} is a level ${randomEnemy.level} enemy with ${randomEnemy.life} life points. Think you can take 'em?`)
             const decision  = readline.keyIn(`Will you : [R]un or [F]ight`, {limit: 'rf'})
             if (decision === "r"){
                 player.isRunning = true
@@ -145,7 +150,7 @@ function walking (){
                 attackingEnemy(randomEnemy)
              }
         }else{
-            console.log("nothing here, better continue on")
+            console.log("Nothing here, better continue on!")
         
         }
     }
@@ -156,13 +161,14 @@ function walking (){
 function runningAway(randomEnemy){
     while(player.isRunning === true){
         if(player.life <= 0){
+            console.log("LOSER")
             player.isrunnings = false
         }else{
     var random = Math.floor((Math.random()*10)+1)
         if(random >= 5){
             console.log(`You tripped and fell, ${randomEnemy.name} attacked you and you lost 10 life points`)
             player.life = (player.life - 10)
-            console.log(player.life)
+            console.log(`You still have ${player.life} life points left`)
             var decisionTwo = readline.keyIn(`Will you : keep [R]unning or stand and [F]ight`, {limit: 'rf'})
             if(decisionTwo === "r"){
                 player.isRunning = true
@@ -186,6 +192,7 @@ function attackingEnemy(randomEnemy){
    
     while(player.attackingMonster === true){
         if(player.life <= 0){
+            console.log("LOSER")
             player.attackingMonster = false
         }else{
         let weapon = chooseYourWeapon()
@@ -225,12 +232,11 @@ function attackingEnemy(randomEnemy){
         let indexNumber = enemies.indexOf(randomEnemy)
         
         enemies[indexNumber].life = enemies[indexNumber].life - 13
-        console.log(enemies[indexNumber].life)
         console.log(`You hit ${randomEnemy.name} with ${weapon.name}, you hurt them and now their angry! `)
         console.log("RAWWWRRRR")
         player.life = (player.life - 5)
-        console.log(player.life)
-        const nextChoice  = readline.keyIn(` ${randomEnemy.name} hit you and you lost 5 life points. Be careful! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
+        console.log(`${randomEnemy.name} hit you and you lost 5 life points. You still have ${player.life} left`)
+        const nextChoice  = readline.keyIn(`${randomEnemy.name} still has ${enemies[indexNumber].life} life points left. Be careful! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
        
     
         if (nextChoice === "r"){
@@ -254,12 +260,11 @@ function attackingEnemy(randomEnemy){
     function battleWithCrappyWeapon(randomEnemy, weapon){
         let indexNumber = enemies.indexOf(randomEnemy)
         enemies[indexNumber].life = enemies[indexNumber].life - 8
-        console.log(enemies[indexNumber].life)
         console.log(`You hit ${randomEnemy.name} with ${weapon.name}, you've irritated them and now their angry! `)
         console.log("RAWWWRRRR")
         player.life = (player.life - 10)
-        console.log(player.life)
-        const nextChoice  = readline.keyIn(` ${randomEnemy.name} hit you and you lost 10 life points. Be careful! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
+        console.log(`${randomEnemy.name} hit you and you lost 10 life points. You still have ${player.life} left`)
+        const nextChoice  = readline.keyIn(`${randomEnemy.name} still has ${enemies[indexNumber].life} life points left. Be careful! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
     
         if (nextChoice === "r"){
             player.isRunning = true
@@ -304,6 +309,7 @@ function attackingEnemy(randomEnemy){
     while(player.fightingDragon === true){
         if(player.life > 0){
         let randomEnemy = firebBreathingDragon
+        console.log(`So you're a brave one huh...`)
         let weapon = chooseYourWeapon()
         if(player.weapons.indexOf(weapon) >= 0){        
             if(weapon.DamageLevel < randomEnemy.level){
@@ -344,11 +350,14 @@ function attackingEnemy(randomEnemy){
 
         
         }else{
+            console.log("THE DRAGON ATE YOU AND NOW YOUR DEAD. BETTER LUCK NEXT TIME!")
             player.fightingDragon = false
         }
     }
 
 } 
+
+
 function saveTheRoyalFamily(){
     console.log('WOW Your amazing astonishing amazing!!!! You saved the royal family and they want to reward you, with money, a palace, a princess, a prince, whatever your into! You should be poud')
     console.log(`THE END`)
