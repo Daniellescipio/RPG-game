@@ -245,7 +245,7 @@ function attackingEnemy(randomEnemy){
             player.attackingMonster = false
         }else{ 
             
-            if(enemies[indexNumber].life <= 0){
+            if(enemies[indexNumber].life - 8 <= 0){
             battleWithGoodWeapon(randomEnemy, weapon)
             player.attackingMonster = false
             }else{
@@ -272,7 +272,7 @@ function attackingEnemy(randomEnemy){
             player.attackingMonster = false
         }else{ 
             
-            if(enemies[indexNumber].life <= 0){
+            if(enemies[indexNumber].life - 8 <= 0){
             battleWithGoodWeapon(randomEnemy, weapon)
             player.attackingMonster = false
             }else{
@@ -324,7 +324,7 @@ function attackingEnemy(randomEnemy){
                     runningAway(randomEnemy, weapon)
                     player.fightingDragon = false
                     }else{ 
-                        if(player.life <= 0){
+                        if(player.life - 50 <= 0){
                             player.isAlive = false
                         }else{
                         player.fightingDragon = true
