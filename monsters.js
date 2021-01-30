@@ -85,5 +85,5 @@ const hera={
     level : 4,
     prizeForDefeat : weaponPieces.magic,
 }
-monsters.push(bigFoot, cyclops, medusa, banditOne, banditTwo, ogre, evilKnight, vampire, werewolf, ninja, hades, hera, ares)
+monsters.push(banditOne, banditTwo, bigFoot, cyclops, ogre, evilKnight, vampire, werewolf, ninja, medusa, hades, hera, ares)
 module.exports = {monsters, firebBreathingDragon}

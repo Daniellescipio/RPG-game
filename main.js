@@ -78,7 +78,7 @@ while(player.isAlive){
                 }
                 return final
             }, {food:0, medicine:0})
-            console.log(`Weapons: ${player.inventory.weapons.map(weapon=>weapon.name)} Food: ${foodAndMeds.food} Medicine: ${foodAndMeds.medicine} Weapon pieces: ${player.inventory.pieces}`)
+            console.log(`Weapons: ${player.inventory.weapons.map(weapon=>weapon.name)} Food: ${foodAndMeds.food} Medicine: ${foodAndMeds.medicine} Weapon pieces: ${player.inventory.pieces.map(piece=>piece.name)}`)
         }else if(walk.toLowerCase() === "l"){
             console.log(`You have ${player.life} life points and ${player.stamina} stamina points left`)
         }else if(walk.toLowerCase() === "e"){
@@ -86,12 +86,16 @@ while(player.isAlive){
                console.log(`You don't have any food, wander the jungle to find some`)
            }else{
                food(player)
+               const foodIndex = player.inventory.backpack.indexOf(food)
+               player.inventory.backpack.splice(foodIndex, 1)
            }
         }else if(walk.toLowerCase() === "a"){
             if(player.inventory.backpack.indexOf(medicine)<0){
                 console.log(`You don't have any medicine, wander the jungle to find some`)
             }else{
                 medicine(player)
+                const medsIndex = player.inventory.backpack.indexOf(medicine)
+                player.inventory.backpack.splice(medsIndex, 1)
             }
         }else if(walk.toLowerCase() === "f"){
             player.fightingDragon = true
@@ -125,7 +129,14 @@ function visitWeaponsShop(){
 function walking (){
     let randomNumber =  Math.floor((Math.random()*16)) 
     if(randomNumber < 5 ){
-        let randomEnemy = enemies[Math.floor(Math.random() * enemies.length)]
+        let randomEnemy
+        if(player.inventory.weapons.length === 1){
+        randomEnemy = enemies[Math.floor(Math.random() * 3)]
+        }else if(player.inventory.weapons.length === 2){
+        randomEnemy = enemies[Math.floor(Math.random() * 6)]  
+        }else{
+        randomEnemy = enemies[Math.floor(Math.random() * enemies.length)]
+        }
         console.log(`Oh no, a ${randomEnemy.name} is blocking your way! ${randomEnemy.name} is a level ${randomEnemy.level} enemy with ${randomEnemy.life} life points. Think you can take 'em?`)
         const decision  = readline.keyIn(`Will you : [R]un or [F]ight`, {limit: 'rf'})
         if (decision === "r"){

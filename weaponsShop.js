@@ -10,16 +10,29 @@ function makeAWeapon(weapon, player){
             makeTheWeapon =readline.keyIn(`Would you like to make this weapon?[Y]es, [N]o`, {limit:`yn`})
             if(makeTheWeapon.toLowerCase()=== 'y'){
                 console.log(`yes`)
-                const countPieces =0
+                let countPieces =0
+                
                 for(let i = 0; i<weapon.peices.length;i++){
-                    eachPiece = weapon.peices
+                    eachPiece = weapon.peices[i]
+                    console.log(eachPiece)
                     if(player.inventory.pieces.indexOf(eachPiece)>=0){
                         countPieces++
                     }
                 }
+                console.log(countPieces, weapon.peices.length)
                 if(countPieces === weapon.peices.length){
-                    console.log(`You made a ${weapon}`)
+                    console.log(`You made a ${weapon.name}`)
                     player.inventory.weapons.push(weapon)
+                    for(let i = 0; i < weapon.peices.length; i++){
+                        player.inventory.peices.pop()
+                    }
+                    const maybeLastDecision = readline.keyIn(`Would you like to make anything else? [Y]es or[N]o?`)
+                    if(maybeLastDecision === `y`){
+                    player.inTheShop = true
+                    }else{
+                    player.inTheShop = false
+                    player.isAlive = true
+                    }
                 }else{
                     console.log(`You do not have all the pieces to make this weapon`)
                     const keepLooking = readline.keyIn(`Would you like to make something else?[Y]es or [N]o`,{limit:`yn`})
@@ -33,23 +46,30 @@ function makeAWeapon(weapon, player){
             }else{
                 const keepLooking = readline.keyIn(`Would you like to make something else?[Y]es or [N]o`,{limit:`yn`})
                 if(keepLooking.toLowerCase === `y`){
-                    inTheShop =true
+                    player.inTheShop =true
                 }else{
-                    inTheShop = false
+                    player.inTheShop = false
                     player.isAlive = true
                 }
             }
         }else if(canYouMakeIt.toLowerCase()=== 'y'){
-            const countPieces =0
+            let countPieces =0
             for(let i = 0; i<weapon.peices.length;i++){
-                eachPiece = weapon.peices
+                eachPiece = weapon.peices[i]
                 if(player.inventory.pieces.indexOf(eachPiece)>=0){
                     countPieces++
                 }
             }
             if(countPieces === weapon.peices.length){
-                console.log(`You made a ${weapon}`)
+                console.log(`You made a ${weapon.name}`)
                 player.inventory.weapons.push(weapon)
+                const maybeLastDecision = readline.keyIn(`Would you like to make anything else? [Y]es or[N]o?`)
+                if(maybeLastDecision === `y`){
+                    player.inTheShop = true
+                }else{
+                    player.inTheShop = false
+                    player.isAlive = true
+                }
             }else{
                 console.log(`You do not have all the pieces to make this weapon`)
                 const keepLooking = readline.keyIn(`Would you like to make something else?[Y]es or [N]o`,{limit:`yn`})
