@@ -13,7 +13,7 @@ function runningAway(randomEnemy, player){
                 console.log(` Your stamina is low! You tripped and fell, ${randomEnemy.name} attacked you and you lost 10 life points`)
                 player.life = (player.life - 10)
                 console.log(`You still have ${player.life} life points left`)
-                var decisionTwo = readline.keyIn(`Will you : keep [R]unning or stand and [F]ight. You can also [E]at food to increase Stamina, or [A]dminister medicine to increade life`, {limit: 'rf'})
+                var decisionTwo = readline.keyIn(`Will you : keep [R]unning or stand and [F]ight. You can also [E]at food to increase Stamina, or [A]dminister medicine to increade life`, {limit: 'raef'})
                 if(decisionTwo === "r"){
                     player.isRunning = true
                 }else if(decisionTwo === 'e'){

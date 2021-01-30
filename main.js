@@ -133,7 +133,9 @@ function walking (){
         if(player.inventory.weapons.length === 1){
         randomEnemy = enemies[Math.floor(Math.random() * 3)]
         }else if(player.inventory.weapons.length === 2){
-        randomEnemy = enemies[Math.floor(Math.random() * 6)]  
+        randomEnemy = enemies[Math.floor(Math.random() * 3)]  
+        }else if(player.inventory.weapons.length === 3){
+        randomEnemy = enemies[Math.floor(Math.random() * 5)]
         }else{
         randomEnemy = enemies[Math.floor(Math.random() * enemies.length)]
         }

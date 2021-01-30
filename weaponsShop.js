@@ -23,7 +23,7 @@ function makeAWeapon(weapon, player){
                 if(countPieces === weapon.peices.length){
                     console.log(`You made a ${weapon.name}`)
                     player.inventory.weapons.push(weapon)
-                    for(let i = 0; i < weapon.peices.length; i++){
+                    for(let i = 0; i < weapon.peices.length -1; i++){
                         player.inventory.peices.pop()
                     }
                     const maybeLastDecision = readline.keyIn(`Would you like to make anything else? [Y]es or[N]o?`)
