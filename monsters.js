@@ -1,8 +1,16 @@
 const {weapons, weaponPieces} = require('./weapons')
+const levels = {
+    levelOne : [],
+    levelTwo : [],
+    levelThree : [],
+    levelFour : []
+    
+}
 const monsters = []
-const firebBreathingDragon= {
+
+ firebBreathingDragon= {
     name : "The Fire Breathing Dragon",
-    life : 100,
+    life : 50,
     level : 5,
     prizeForDefeat: weapons.key,   
 }
@@ -85,5 +93,10 @@ const hera={
     level : 4,
     prizeForDefeat : weaponPieces.magic,
 }
-monsters.push(banditOne, banditTwo, bigFoot, cyclops, ogre, evilKnight, vampire, werewolf, ninja, medusa, hades, hera, ares)
-module.exports = {monsters, firebBreathingDragon}
+
+// levels.levelOne.push(banditOne, banditTwo)
+// levels.levelTwo.push(bigFoot, cyclops, ogre)
+// levels.levelThree.push( evilKnight, vampire, werewolf, ninja)
+// levels.levelFour.push(medusa, hades, hera, ares)
+monsters.push(banditOne,banditTwo, bigFoot, ogre, cyclops, evilKnight, vampire, werewolf,ninja,medusa,hades,hera, ares)
+module.exports = {monsters, firebBreathingDragon, levels}

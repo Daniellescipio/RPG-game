@@ -13,13 +13,16 @@ const player = {
     isRunning : false,
     haskey : false,
     fightingDragon: false,
-    inTheShop : false
+    inTheShop : false,
+    level : 1
 }
+console.log(player.level)
 const makeAWeapon = require("./weaponsShop")
 const {food, medicine} = require("./foodAndMedicine")
 const {weapons} = require("./weapons")
+const fightTheDragon = require('./dragon')
 player.inventory.weapons.push(weapons.hands)
-const {monsters : enemies} = require("./monsters")
+const {monsters, levels, firebBreathingDragon} = require("./monsters")
 const {runningAway, attackingEnemy, chooseYourWeapon, battleWithCrappyWeapon, battleWithOkWeapon, winBattle } = require("./battle")
 
 player.name = readline.question('May I have your name? ')
@@ -62,13 +65,12 @@ while(player.isAlive){
             player.inTheShop = true
             visitWeaponsShop()
         }else if(walk.toLowerCase() === "w"){
-                if(enemies.length > 0){
+                if(monsters.length > 0){
                     walking()
                 }else{
-                    console.log(`It looks like you beat all the monsters in the jungle, time to face the Dragon. READY OR NOT!`)
-                    player.fightingDragon = true
-                    fightTheDragon()
+                    console.log(`It looks like you beat all the monsters in the jungle(make sure you have a strong enough weapon) or Save the royal family(make sure you have the key)`)
                 }
+                
         }else if(walk.toLowerCase() === "i"){
             let foodAndMeds = player.inventory.backpack.reduce((final, item)=>{
                 if (item.name === "food"){
@@ -99,9 +101,16 @@ while(player.isAlive){
             }
         }else if(walk.toLowerCase() === "f"){
             player.fightingDragon = true
-            fightTheDragon()
+            if(monsters.length>0){
+                console.log(`So you're a brave one huh...`)
+                fightTheDragon(player)
+            }else{
+                    console.log(`...took you long enough.`)
+                    fightTheDragon(player)
+            }
+            
         }else if(walk.toLowerCase() === "r"){
-            if(player.weapons.indexOf(key) >= 0){
+            if(player.inventory.weapons.indexOf(weapons.key) >= 0){
                 saveTheRoyalFamily()
             }else if(player.weapons.indexOf(key) < 0){
                 console.log("You don't have a key! Did you fight the Dragon yet???? Then WHY ARE YOU HERE?! BEGONE!")
@@ -127,18 +136,46 @@ function visitWeaponsShop(){
     }
 }
 function walking (){
+    if(player.life<60){
+        findMedicine(player)
+    }
+    if(player.stamina<5){
+        findFood(player)
+    }
+    levels.levelOne = monsters.filter(monster=>monster.level === 1)
+    levels.levelTwo = monsters.filter(monster=>monster.level === 2)
+    levels.levelThree = monsters.filter(monster=>monster.level === 3)
+    levels.levelFour = monsters.filter(monster=>monster.level === 4)
     let randomNumber =  Math.floor((Math.random()*16)) 
+    let enemies
+    let randomEnemy
     if(randomNumber < 5 ){
-        let randomEnemy
-        if(player.inventory.weapons.length === 1){
-        randomEnemy = enemies[Math.floor(Math.random() * 3)]
-        }else if(player.inventory.weapons.length === 2){
-        randomEnemy = enemies[Math.floor(Math.random() * 3)]  
-        }else if(player.inventory.weapons.length === 3){
-        randomEnemy = enemies[Math.floor(Math.random() * 5)]
-        }else{
-        randomEnemy = enemies[Math.floor(Math.random() * enemies.length)]
+        if(player.level === 1){ 
+            if(levels.levelOne.length>0){
+            enemies = Math.floor((Math.random()*5))===1 ? [...levels.levelOne, monsters[2]] : levels.levelOne
+            }else{
+                enemies = monsters
+            }
+        }else if(player.level===2){
+            if(levels.levelTwo.length>0){
+            enemies =Math.floor((Math.random()*5))===1 ? [...levels.levelTwo, monsters[4]] : levels.levelTwo
+            }else{
+                enemies = monsters
+            }
+        }else if(player.level ===3){
+            if(levels.levelThree.length>0){
+            enemies =Math.floor((Math.random()*5))===1 ? [...levels.levelThree, monsters[5]]: levels.levelThree
+            }else{
+                enemies = monsters
+            }
+        }else if(player.level === 4){
+            if(levels.levelFour.length >0){
+            enemies = levels.levelFour
+            }else{
+                enemies = monsters
+            }
         }
+        randomEnemy = enemies[Math.floor(Math.random() * enemies.length)]    
         console.log(`Oh no, a ${randomEnemy.name} is blocking your way! ${randomEnemy.name} is a level ${randomEnemy.level} enemy with ${randomEnemy.life} life points. Think you can take 'em?`)
         const decision  = readline.keyIn(`Will you : [R]un or [F]ight`, {limit: 'rf'})
         if (decision === "r"){
@@ -181,52 +218,6 @@ function findMedicine(){
     }
 }
 
-function fightTheDragon(){
-    while(player.fightingDragon === true){
-        if(player.weapons.indexOf(key)<0){ 
-            let randomEnemy = firebBreathingDragon
-            console.log(`So you're a brave one huh...`)
-            let weapon = chooseYourWeapon()
-            if(player.weapons.indexOf(weapon) >= 0){        
-                if(weapon.DamageLevel < randomEnemy.level){
-                    console.log(`You chose ${weapon.name}, ${weapon.Definition}`)
-                    console.log(`You hit ${randomEnemy.name} with ${weapon.name}, they barely felt it! `)
-                    console.log("RAWWWWR *FIREBALL* RAWWWWR *FIREBALL *RAWWWWR *FIREBALL* ")
-                    player.life = (player.life - 50)
-                    console.log(player.life)
-                    if(player.life >0){ 
-                        const nextChoice  = readline.keyIn(` ${randomEnemy.name} hit you and you lost FIFTY life points. You should definitely RUN NOW! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
-                        if (nextChoice === "r"){
-                        player.isRunning = true
-                        runningAway(randomEnemy, weapon)
-                        player.fightingDragon = false
-                        }else{ 
-                        player.fightingDragon = true
-                        }
-                    }else{
-                        console.log("THE DRAGON ATE YOU AND NOW YOUR DEAD. BETTER LUCK NEXT TIME!")
-                        player.fightingDragon = false
-                        player.isAlive - false
-                    }
-                }else if(weapon.DamageLevel >= randomEnemy.level){
-                    console.log(`You chose ${weapon.name}, ${weapon.Definition}`)
-                    console.log(`You hit ${randomEnemy.name} with ${weapon.name}, they're reeling!!' `)
-                    console.log("RAWWWWR *FIREBALL* RAWWWWR *FIREBALL *RAWWWWR *FIREBALL* ")
-                    console.log(`This dragon is no one year old wizard cloaked in love so the killng curse did them in!!`)
-                    player.weapons.push(randomEnemy.prizeForDefeat)
-                    console.log(`Oh Look, A key!`)
-                
-                    player.fightingDragon = false
-                }
-            }else{
-            console.log("It doesn't look like you have this weapon yet! Keep fighting to earn it!")
-            }
-        }else{
-            console.log("You already beat this dragon....is there a reason you won't go save the family or.....")
-            player.fightingDragon = false
-        }
-    }
-} 
 
 
 function saveTheRoyalFamily(){

@@ -21,10 +21,12 @@ function makeAWeapon(weapon, player){
                 }
                 console.log(countPieces, weapon.peices.length)
                 if(countPieces === weapon.peices.length){
-                    console.log(`You made a ${weapon.name}`)
+                    console.log(`You made a ${weapon.name} and gone up a level!`)
                     player.inventory.weapons.push(weapon)
-                    for(let i = 0; i < weapon.peices.length -1; i++){
-                        player.inventory.peices.pop()
+                    player.level = player.inventory.weapons.length 
+                    console.log(`hello ${player.level}`)
+                    for(let i =0; i<weapon.pieces; i++){
+                    player.inventory.peices = player.inventory.peices.filter(piece=>piece!==weapon.peices[i])
                     }
                     const maybeLastDecision = readline.keyIn(`Would you like to make anything else? [Y]es or[N]o?`)
                     if(maybeLastDecision === `y`){
@@ -61,8 +63,10 @@ function makeAWeapon(weapon, player){
                 }
             }
             if(countPieces === weapon.peices.length){
-                console.log(`You made a ${weapon.name}`)
+                console.log(`You made a ${weapon.name} and gone up a level!`)
                 player.inventory.weapons.push(weapon)
+                player.level = player.inventory.weapons.length 
+                console.log(`${player.level}`)
                 const maybeLastDecision = readline.keyIn(`Would you like to make anything else? [Y]es or[N]o?`)
                 if(maybeLastDecision === `y`){
                     player.inTheShop = true

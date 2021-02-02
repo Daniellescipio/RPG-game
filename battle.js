@@ -1,7 +1,7 @@
 const readline = require("readline-sync")
 const {food, medicine} = require("./foodAndMedicine")
-const {weapons, weaponPieces} = require("./weapons")
-const {monsters : enemies} = require("./monsters")
+const {weapons} = require("./weapons")
+const {monsters, firebBreathingDragon} = require("./monsters")
 function runningAway(randomEnemy, player){
     while(player.isRunning === true){
         if(player.life <= 0){
@@ -85,28 +85,28 @@ function chooseYourWeapon(){
     }            
 } 
 function winBattle(randomEnemy, weapon, player){
-        let indexNumber = enemies.indexOf(randomEnemy)
-        var newWeaponPiece = enemies[indexNumber].prizeForDefeat
-        player.inventory.pieces.push(newWeaponPiece)
-        enemies.splice(indexNumber, 1)
-        console.log(`${randomEnemy.name} is no match for ${weapon.name}, you killed them and won ${newWeaponPiece.name} `)
-        player.attackingMonster = false
+    
+    let indexNumber = monsters.indexOf(randomEnemy)
+    var newWeaponPiece = monsters[indexNumber].prizeForDefeat
+    player.inventory.pieces.push(newWeaponPiece)
+    monsters.splice(indexNumber, 1)
+    console.log(`${randomEnemy.name} is no match for ${weapon.name}, you killed them and won ${newWeaponPiece.name} `)
+    player.attackingMonster = false
 }
 
 function battleWithOkWeapon(randomEnemy, weapon, player){  
     const randomNum = Math.floor(Math.random()* player.stamina)
-    if(randomNum <3){
+    if(randomNum <3 && randomEnemy !==firebBreathingDragon){
         if(player.stamina<5){
             console.log(`Your Stamina is low!You swung and missed!`)
         }
-        let indexNumber = enemies.indexOf(randomEnemy)
         console.log(`You swung and missed!`)
         console.log("RAWWWRRRR")
         player.life = (player.life - 10)
         console.log(`${randomEnemy.name} hit you and you lost 10 life points.`)
         console.log(`Remaining life: ${player.life}`)
         if(player.life > 0){
-            const nextChoice  = readline.keyIn(`${randomEnemy.name} still has ${enemies[indexNumber].life} life points left. Be careful! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
+            const nextChoice  = readline.keyIn(`${randomEnemy.name} still has ${randomEnemy.life} life points left. Be careful! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
             if (nextChoice === "r"){
                 player.isRunning = true
                 runningAway(randomEnemy, player)
@@ -119,15 +119,14 @@ function battleWithOkWeapon(randomEnemy, weapon, player){
             player.attackingMonster =false
         }
     }else{ 
-        let indexNumber = enemies.indexOf(randomEnemy)  
-        enemies[indexNumber].life = enemies[indexNumber].life - 10
+        randomEnemy.life = randomEnemy.life - 10
         console.log(`You hit ${randomEnemy.name} with ${weapon.name}, you hurt them and now their angry! `)
         console.log("RAWWWRRRR")
         if(randomEnemy.life >0){ 
             player.life = (player.life - 10)
             console.log(`${randomEnemy.name} hit you and you lost 10 life points.`)
             if(player.life>0){
-                const nextChoice  = readline.keyIn(`${randomEnemy.name} still has ${enemies[indexNumber].life} life points left. Be careful! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
+                const nextChoice  = readline.keyIn(`${randomEnemy.name} still has ${randomEnemy.life} life points left. Be careful! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
                 if (nextChoice === "r"){
                     player.isRunning = true
                     runningAway(randomEnemy, player)
@@ -151,14 +150,13 @@ function battleWithCrappyWeapon(randomEnemy, weapon, player){
         if(player.stamina<5){
             console.log(`Your Stamina is low!You swung and missed!`)
         }
-        let indexNumber = enemies.indexOf(randomEnemy)
         console.log(`You swung and missed!`)
         console.log("RAWWWRRRR")
         player.life = (player.life - 20)
         console.log(`${randomEnemy.name} hit you and you lost 20 life points.`)
         console.log(`Remaining life: ${player.life}`)
         if(player.life > 0){
-            const nextChoice  = readline.keyIn(`${randomEnemy.name} still has ${enemies[indexNumber].life} life points left. Be careful! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
+            const nextChoice  = readline.keyIn(`${randomEnemy.name} still has ${randomEnemy.life} life points left. Be careful! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
             if (nextChoice === "r"){
                 player.isRunning = true
                 runningAway(randomEnemy, player)
@@ -172,8 +170,7 @@ function battleWithCrappyWeapon(randomEnemy, weapon, player){
         }
     
     }else{
-        let indexNumber = enemies.indexOf(randomEnemy)
-        enemies[indexNumber].life = enemies[indexNumber].life - 6
+        randomEnemy.life = randomEnemy.life - 6
         console.log(`You hit ${randomEnemy.name} with ${weapon.name}, you've irritated them and now their angry! `)
         console.log(`${randomEnemy.name} now has ${randomEnemy.life} life left`)
         console.log("RAWWWRRRR")
@@ -182,7 +179,7 @@ function battleWithCrappyWeapon(randomEnemy, weapon, player){
             player.life = (player.life - 20)
             console.log(`Remaining life: ${player.life}`)
             if(player.life > 0){
-                const nextChoice  = readline.keyIn(`${randomEnemy.name} still has ${enemies[indexNumber].life} life points left. Be careful! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
+                const nextChoice  = readline.keyIn(`${randomEnemy.name} still has ${randomEnemy.life} life points left. Be careful! Will you keep [F]ighting or [R]un `, {limit: 'fr'})
                 if (nextChoice === "r"){
                     player.isRunning = true
                     runningAway(randomEnemy, player)

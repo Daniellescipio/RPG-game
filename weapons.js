@@ -48,7 +48,7 @@ const weaponPieces = {
         description: "Unless you know how to make wands your gonna need this dude."
     },
     magic:{
-        name : 'wood',
+        name : 'magic',
         description: `A little pixie dust so you can work the wand when you need to`
     },
 }
