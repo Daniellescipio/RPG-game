@@ -18,10 +18,10 @@ function runningAway(randomEnemy, player){
                     player.isRunning = true
                 }else if(decisionTwo === 'e'){
                     food(player)
-                    decisionTwo = readline.keyIn(`Will you : keep [R]unning or stand and [F]ight. You can also [E]at food to increase Stamina, or [A]dminister medicine to increade life`, {limit: 'rf'})
+                    decisionTwo = readline.keyIn(`Will you : keep [R]unning or stand and [F]ight. You can also [E]at food to increase Stamina, or [A]dminister medicine to increade life`, {limit: 'raef'})
                 }else if(decisionTwo==='a'){
                     medicine(player)
-                    decisionTwo = readline.keyIn(`Will you : keep [R]unning or stand and [F]ight. You can also [E]at food to increase Stamina, or [A]dminister medicine to increade life`, {limit: 'rf'})
+                    decisionTwo = readline.keyIn(`Will you : keep [R]unning or stand and [F]ight. You can also [E]at food to increase Stamina, or [A]dminister medicine to increade life`, {limit: 'raef'})
                 }else{
                     player.attackingMonster = true
                     attackingEnemy(randomEnemy)

@@ -112,7 +112,7 @@ while(player.isAlive){
         }else if(walk.toLowerCase() === "r"){
             if(player.inventory.weapons.indexOf(weapons.key) >= 0){
                 saveTheRoyalFamily()
-            }else if(player.weapons.indexOf(key) < 0){
+            }else if(player.weapons.indexOf(weapons.key) < 0){
                 console.log("You don't have a key! Did you fight the Dragon yet???? Then WHY ARE YOU HERE?! BEGONE!")
             }
         }else{
