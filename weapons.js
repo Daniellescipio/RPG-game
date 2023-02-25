@@ -1,11 +1,11 @@
 const weaponPieces = {
     wood: {
-        name : 'wood',
-        description: 'a peice of wood, good for carving into weapons'
+        name : 'piece of wood',
+        description: 'a piece of wood, good for carving into weapons',
     },
     metal:{
-        name : 'metal',
-        description: 'a peice of metal, good for molding into a weapon'
+        name : 'piece of metal',
+        description: 'a piece of metal, good for molding into a weapon'
     }, 
     blade:{
         name : 'blade',
@@ -17,7 +17,7 @@ const weaponPieces = {
     },
     crossgaurd:{
         name : 'crossgaurd',
-        description: `idk, but theSearches said you need one to make a sword`
+        description: `idk, but the Searches said you need one to make a sword`
     },
     action:{
         name : 'action',
@@ -56,36 +56,51 @@ const weaponPieces = {
 const weapons ={
     hands:{
         name: "these hands",
-        Definition : "Sorry No weapons yet, FIGHT!",
-        DamageLevel :  1
+        Definition : "When you have nothing else, you have these hands",
+        DamageLevel :  1,
+        catchPhrase:["Catch these!", "You don't want these hands", "Don't make me smack you", "Why I outta","This the strong hand"] ,
+        attack:["smack", "punch", "slap", "molly wop", "hit", "bash"],
+        finishingMove:["backhand", "Sucker punch", "knockout"],
     },
     axe:{
-        name : "an axe",
-        Definition : "This is good for cutting big trees down, wonder who else it could cut down...",
+        name : "your axe",
+        Definition : "A sturdy blunt handle and a sharp blade, the possiblities are endless.",
         DamageLevel :  2,
-        peices: [weaponPieces.wood, weaponPieces.metal]
+        catchPhrase:["This axe was made for swinging, and that's just what I'm gonna do!","It's time to cut you down to size", "How much villian could a hero chuck if a hero could chuck villians",],
+        attack:["chop", "slash", "cut", "tear at"],
+        finishingMove:["chop parts off of", "removes the head of", "cracks the skull of","cuts up"],
+        pieces: [weaponPieces.wood, weaponPieces.metal]
     },
     sword: {
-        name : "a sword",
-        Definition : "A sword! Stick 'em with the pointy end!",
+        name : "your sword",
+        Definition : "A finely crafted metal blade",
         DamageLevel :  3,
-        peices: [weaponPieces.blade, weaponPieces.pommel,weaponPieces.crossgaurd ]
+        catchPhrase: ["Hatori Hanzo himself would be proud of this bad boy", "get the point yet?", "Stick em with the pointy end", "*fancy blade swing*"],
+        attack:["slice", "cut", "scissor", "slash", "pierce"],
+        finishingMove:["behead", "pierce the heart of", "cut from navel to nose"],
+        pieces: [weaponPieces.blade, weaponPieces.pommel,weaponPieces.crossgaurd ]
     },
     laserGun:{
-        name : "a Laser Gun",
-        Definition : "A laser gun! Say hello to my not so little friend!",
+        name : "your laser gun",
+        Definition : "Half gun, half laser",
         DamageLevel :  4,
-        peices: [weaponPieces.action, weaponPieces.stock, weaponPieces.barrel, weaponPieces.laser ]
+        catchPhrase:["Say hello to my not so little friend", "It shoot's lasers!", "Gun meet laser"],
+        attack:["shoot", "pierce", "hit"],
+        finishingMove:["put a hole through", "obiliterate", "melt", "disenegrate", "blast"],
+        pieces: [weaponPieces.action, weaponPieces.stock, weaponPieces.barrel, weaponPieces.laser ]
     } ,
     magicWand:{
-        name : "a Magic Wand",
-        Definition : "AVADA KEDAVRA!",
+        name : "your magic wand",
+        Definition : "A magic piece of wood used to channel magic",
         DamageLevel :  5,
-        peices: [weaponPieces.holly, weaponPieces.pheonixFeather, weaponPieces.garrickOllivander, weaponPieces.magic ]
+        catchPhrase:"AVADA KEDAVRA!",
+        attack:["cast an attack spell", "cast a poison spell", "shrink", "slow down", "throw"],
+        finishingMove:["cast a death spell on", "dissappear", "eviscerate", "decimate",],
+        pieces: [weaponPieces.holly, weaponPieces.pheonixFeather, weaponPieces.garrickOllivander, weaponPieces.magic ]
     } ,
     key:{
         name : "a key",
-        defintion : "It's no weapon, but it'll get you the girl!",
+        defintion : "It's no weapon, but it'll get you the girl!(and the rest of her family)",
         DamageLevel : null
     }
 }
